@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+:root {
+  /* Evolute Brand Colors */
+  --frosted-almond: #FBFAF8;
+  --academic-blue: #192432;
+  --bombay: #989CA3;
+  
+  /* Academic Blue Scale */
+  --ab-25: #F2F3F3;
+  --ab-50: #EAEAEB;
+  --ab-100: #D2D3D6;
+  --ab-200: #B7BABE;
+  --ab-300: #989CA3;
+  --ab-400: #6F7682;
+  --ab-500: #2C3E56;
+  --ab-600: #28394F;
+  --ab-700: #243346;
+  --ab-800: #1F2C3D;
+  --ab-900: #192432;
+  --ab-950: #121923;
+  
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-space-grotesk), system-ui, sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, var(--ab-950) 0%, var(--ab-800) 100%);
+  color: var(--frosted-almond);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.font-display {
+  font-family: var(--font-heading);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.font-headline {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.font-body {
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ab-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ab-500);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ab-400);
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Range slider styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--ab-700);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--frosted-almond);
+  cursor: pointer;
+  border: none;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: var(--ab-100);
+}
+
+/* Selection */
+::selection {
+  background: rgba(152, 156, 163, 0.3);
+}
+
+/* Material Icons */
+.material-symbols-sharp {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24;
+}
