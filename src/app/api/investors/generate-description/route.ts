@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let _openai: OpenAI | null = null;
+function getOpenAI() {
+  if (!_openai) _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
+  return _openai;
+}
 
 interface Investor {
   id: number;
@@ -52,7 +54,7 @@ ${investor.geographic_restrictions ? `Geographic Restrictions: ${investor.geogra
 ${investor.portfolio_signals ? `Notable Portfolio: ${investor.portfolio_signals}` : ''}
 `.trim();
 
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o-mini',
       max_tokens: 300,
       temperature: 0.7,

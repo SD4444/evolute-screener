@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let _openai: OpenAI | null = null;
+function getOpenAI() {
+  if (!_openai) _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
+  return _openai;
+}
 
 interface PageContent {
   url: string;
@@ -216,7 +218,7 @@ Extract and return a JSON object with this exact structure:
 
 Be thorough but only include information you can confidently extract from the content. If information is not available, use null for that field.`;
 
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o-mini',
       max_tokens: 4000,
       temperature: 0,

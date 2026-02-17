@@ -1,9 +1,11 @@
 import { NextRequest } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+let _openai: OpenAI | null = null;
+function getOpenAI() {
+  if (!_openai) _openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
+  return _openai;
+}
 
 interface ClientCriteria {
   clientName: string;
@@ -27,7 +29,6 @@ interface InvestorInput {
 export async function POST(request: NextRequest) {
   const { criteria, investors }: { criteria: ClientCriteria; investors: InvestorInput[] } = await request.json();
   
-  // Create a readable stream
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
@@ -51,9 +52,7 @@ export async function POST(request: NextRequest) {
         });
         
         try {
-          // Screen the investor using AI
           const result = await screenInvestor(investor, criteria);
-          
           sendEvent('result', {
             index: i,
             investor: {
@@ -122,11 +121,6 @@ async function screenInvestor(investor: InvestorInput, criteria: ClientCriteria)
 ## Task
 Based on the investor's name, website, and HQ, determine if this investor is likely a good match for the client.
 
-Consider:
-1. Does the investor name suggest they invest in the relevant sectors?
-2. Does their geographic location align with the client's target regions?
-3. Are there any obvious mismatches (e.g., "Healthcare Fund" for a fintech company)?
-
 Respond with a JSON object:
 {
   "verdict": "qualified" | "disqualified" | "needs-review",
@@ -141,7 +135,7 @@ If you cannot determine a clear match/mismatch from the limited info, use "needs
 Be conservative - when in doubt, mark as "needs-review" rather than disqualify.`;
 
   try {
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [{ role: 'user', content: prompt }],
       temperature: 0,
